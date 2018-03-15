@@ -82,7 +82,14 @@ public final class GUImiau extends javax.swing.JFrame {
                     DatagramPacket messageIn
                             = new DatagramPacket(buffer, buffer.length);
                     s.receive(messageIn);
+                    String ip = new String(messageIn.getData());
                     String posicionRecibida = new String(messageIn.getData());
+                    ip = ip.trim();
+                    if (ip.equals(Inet4Address.getLocalHost().getHostAddress())){
+                        System.out.println("Entra al if ");
+                      jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
+                    }
+                    else {
                     posicionMonstruo = posicionRecibida;
                     char[] splited = posicionRecibida.toCharArray();
                     int pos0 = Character.getNumericValue(splited[0]);
@@ -93,10 +100,12 @@ public final class GUImiau extends javax.swing.JFrame {
                     }
                     ant0 = pos0;
                     ant1 = pos1;
-
+                    
                     System.out.println("Posiciones: x=" + pos0 + " y=" + pos1);
+                    }
                     //    System.out.println(posicionRecibida);
                    
+                    //    System.out.println(posic
                 }
                  s.leaveGroup(group);
                 
@@ -163,6 +172,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void initComponents() {
 
         label2 = new javax.swing.JLabel();
+        jOptionPane2 = new javax.swing.JOptionPane();
+        jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         cb00 = new javax.swing.JCheckBox();
         cb01 = new javax.swing.JCheckBox();
@@ -179,6 +190,17 @@ public final class GUImiau extends javax.swing.JFrame {
         label4 = new javax.swing.JLabel();
 
         label2.setText("jLabel1");
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -508,6 +530,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private javax.swing.JCheckBox cb20;
     private javax.swing.JCheckBox cb21;
     private javax.swing.JCheckBox cb22;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JOptionPane jOptionPane2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel label;
     private javax.swing.JLabel label1;

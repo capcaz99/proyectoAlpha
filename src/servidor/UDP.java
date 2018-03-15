@@ -23,6 +23,7 @@ public class UDP extends Thread {
 
     @Override
     public void run() {
+        String posEnviar;
       MulticastSocket s = null;
         int i = 0;
         while (i < 10) { //Cambiar mientras no haya ganador
@@ -37,15 +38,19 @@ public class UDP extends Thread {
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
 
-                System.out.println("Posición enviada: x=" + posiciones[0] + " y=" + posiciones[1]);
-                String posEnviar = "" + posiciones[0] + posiciones[1];
+                //System.out.println("Posición enviada: x=" + posiciones[0] + " y=" + posiciones[1]);
+                posEnviar = "" + posiciones[0] + posiciones[1];
 
-                byte[] m = posEnviar.getBytes();
+                if (!RunThreads.ganador.equals("")){
+                    posEnviar = RunThreads.ganador.trim();
+                    RunThreads.ganador = "";
+                }
+                
+                    byte[] m = posEnviar.getBytes();
                 DatagramPacket messageOut
                         = new DatagramPacket(m, m.length, group, 6789);
                 s.send(messageOut);
                 s.leaveGroup(group);
-                
                 
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());

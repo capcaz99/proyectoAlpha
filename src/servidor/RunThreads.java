@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  * @author ARENDONCL
  */
 public class RunThreads {
+    
+    public static String ganador = "";
 
 
         public static void main(String[] args) {

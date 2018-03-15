@@ -61,6 +61,7 @@ public class RMI extends Thread implements Registro{
         System.out.println("--------------------------------------Añadido a: "+ip);
         }else{
             System.out.println("-------------------Ya hay un ganador-------------");
+       RunThreads.ganador = ip;
         }
     }
     
