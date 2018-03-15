@@ -38,7 +38,7 @@ public class TCPListener {
 class Connection extends Thread {
     
     
-    Hashtable<String, Integer> puntajes = new Hashtable<String, Integer>();
+    
     int puntaje = 0;
     String data;
     DataInputStream in;
@@ -64,16 +64,25 @@ class Connection extends Thread {
             System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
             out.writeUTF(data); // las llaves van a ser las direcciones IP
             
+            System.out.println(RunThreads.puntajes.get(data.trim()));
+            
+            if(!RunThreads.puntajes.containsKey(data.trim())){
+                RunThreads.puntajes.put(data.trim(), 1); // si no existe, se agrega a la tabla hash
+                System.out.println("es la primera vez");
+                System.out.println("miauuuuuuuuu "+RunThreads.puntajes.containsKey(data.trim()));
 
-            if(!puntajes.containsKey(data)){
-                puntajes.put(data, 1); // si no existe, se agrega a la tabla hash
             }
-            else
-                if (puntajes.get(data)<4)
-                puntajes.put(data, puntajes.get(data) + 1);
+            else{
+                
+                if (RunThreads.puntajes.get(data.trim())<4){
+                RunThreads.puntajes.put(data.trim(), RunThreads.puntajes.get(data.trim()) + 1);
+                System.out.println("suma ");
+                
+                }
                 else
                     unaVez.run();  // se envía una vez quién ganó esta partida
-            System.out.println("miauu:   "+puntajes.get(data));
+            }
+            System.out.println("miauu:   "+RunThreads.puntajes.get(data.trim()));
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {

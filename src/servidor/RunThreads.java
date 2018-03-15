@@ -5,6 +5,7 @@
  */
 package servidor;
 
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * @author ARENDONCL
  */
 public class RunThreads {
-
+public static Hashtable<String, Integer> puntajes = new Hashtable<String, Integer>();
 
         public static void main(String[] args) {
 
