@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/CABURTOP/Downloads/ProyectoAlphaCapcats/src/GUImiau.java</file>
-            <file>file:/C:/Users/CABURTOP/Downloads/ProyectoAlphaCapcats/src/servidor/TCPListener.java</file>
-            <file>file:/C:/Users/CABURTOP/Downloads/ProyectoAlphaCapcats/src/servidor/RunThreads.java</file>
-            <file>file:/C:/Users/CABURTOP/Downloads/ProyectoAlphaCapcats/src/servidor/UDP.java</file>
+            <file>file:/C:/Users/ARENDONCL/Documents/proyectoAlpha/proyectoAlpha/src/GUImiau.java</file>
+            <file>file:/C:/Users/ARENDONCL/Documents/proyectoAlpha/proyectoAlpha/src/servidor/RunThreads.java</file>
+            <file>file:/C:/Users/ARENDONCL/Documents/proyectoAlpha/proyectoAlpha/src/servidor/UDPchiquito.java</file>
+            <file>file:/C:/Users/ARENDONCL/Documents/proyectoAlpha/proyectoAlpha/src/servidor/UDP.java</file>
+            <file>file:/C:/Users/ARENDONCL/Documents/proyectoAlpha/proyectoAlpha/src/servidor/TCPListener.java</file>
         </group>
     </open-files>
 </project-private>

@@ -8,40 +8,26 @@ package servidor;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author CABURTOP
- */
-public class UDP extends Thread {
-    
 
-    @Override
-    public void run() {
+
+public class UDPchiquito extends Thread{
+    
+     public void run() {
       MulticastSocket s = null;
         int i = 0;
-        while (i < 10) { //Cambiar mientras no haya ganador
+       
             try {
-                Random r = new Random();
-                int posiciones[] = {r.nextInt(3), r.nextInt(3)};
-                //int posiciones[] = {2,2};
-                
-                
-
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
-
-                System.out.println("Posición enviada: x=" + posiciones[0] + " y=" + posiciones[1]);
-                String posEnviar = "" + posiciones[0] + posiciones[1];
-
-                byte[] m = posEnviar.getBytes();
+                byte[] m = Inet4Address.getLocalHost().getHostAddress().getBytes();
                 DatagramPacket messageOut
                         = new DatagramPacket(m, m.length, group, 6789);
                 s.send(messageOut);
@@ -64,6 +50,5 @@ public class UDP extends Thread {
           }
         }
     }
-}
-
+    
 

@@ -11,6 +11,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Hashtable;
 
 /**
  *
@@ -36,15 +37,17 @@ public class TCPListener {
 
 class Connection extends Thread {
     
+    
+    Hashtable<String, Integer> puntajes = new Hashtable<String, Integer>();
     int puntaje = 0;
     String data;
     DataInputStream in;
     DataOutputStream out;
-    
+
     Socket clientSocket;
 
     public Connection(Socket aClientSocket) {
-        try { 
+        try {
             clientSocket = aClientSocket;
             in = new DataInputStream(clientSocket.getInputStream());
             out = new DataOutputStream(clientSocket.getOutputStream());
@@ -57,8 +60,20 @@ class Connection extends Thread {
     public void run() {
         try {			                 // an echo server
             data = in.readUTF();
+            UDPchiquito unaVez = new UDPchiquito();
             System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
-           
+            out.writeUTF(data); // las llaves van a ser las direcciones IP
+            
+
+            if(!puntajes.containsKey(data)){
+                puntajes.put(data, 1); // si no existe, se agrega a la tabla hash
+            }
+            else
+                if (puntajes.get(data)<4)
+                puntajes.put(data, puntajes.get(data) + 1);
+                else
+                    unaVez.run();  // se envía una vez quién ganó esta partida
+            System.out.println("miauu:   "+puntajes.get(data));
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {
@@ -71,5 +86,5 @@ class Connection extends Thread {
             }
         }
     }
-    
+
 }
