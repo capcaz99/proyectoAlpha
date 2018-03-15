@@ -5,12 +5,13 @@
  */
 package servidor;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  *
  * @author CABURTOP
  */
-public interface Registro {
+public interface Registro extends Remote {
     public void registrar (String ip) throws RemoteException;
 }
