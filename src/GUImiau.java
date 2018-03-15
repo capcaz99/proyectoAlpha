@@ -11,8 +11,14 @@ import java.net.MulticastSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import servidor.Registro;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,11 +32,29 @@ import java.util.logging.Logger;
 public final class GUImiau extends javax.swing.JFrame {
 
     String posicionMonstruo;
+    Registro comp;
+    int puntos = 1;
     
-    public GUImiau() {
+    public GUImiau() throws RemoteException, UnknownHostException {
 
         initComponents();
         listenUD hilo = new listenUD();
+        String name = "Registro";
+        Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
+        try {
+            this.comp = (Registro) registry.lookup(name);
+            try {
+                comp.registrar(Inet4Address.getLocalHost().getHostAddress());
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Tengo el registro");
+        } catch (NotBoundException ex) {
+            Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AccessException ex) {
+            Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         hilo.start();
 
     }
@@ -45,7 +69,9 @@ public final class GUImiau extends javax.swing.JFrame {
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 
-
+               
+            
+            
                 byte[] buffer = new byte[1000];
                 int ant0 = 0;
                 int ant1 = 0;
@@ -87,45 +113,12 @@ public final class GUImiau extends javax.swing.JFrame {
         }
     }
 
-    public void listenUDP() {
-        javax.swing.JCheckBox[][] botones = {{cb00, cb01, cb02}, {cb10, cb11, cb12}, {cb20, cb21, cb22}};
-        MulticastSocket s = null;
-        try {
-            InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
-            s = new MulticastSocket(6789);
-            s.joinGroup(group);
-
-            byte[] buffer = new byte[1000];
-            //for(int i=0; i< 3; i++) {
-            System.out.println("Waiting for messages");
-            DatagramPacket messageIn
-                    = new DatagramPacket(buffer, buffer.length);
-            s.receive(messageIn);
-            String posicionRecibida = new String(messageIn.getData());
-            char[] splited = posicionRecibida.toCharArray();
-            int pos0 = Character.getNumericValue(splited[0]);
-            int pos1 = Character.getNumericValue(splited[1]);
-            botones[pos0][pos1].setSelected(true);
-            System.out.println("Posiciones: x=" + pos0 + " y=" + pos1);
-            //    System.out.println(posicionRecibida);
-
-            //}
-            s.leaveGroup(group);
-        } catch (SocketException e) {
-            System.out.println("Socket: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO: " + e.getMessage());
-        } finally {
-            if (s != null) {
-                s.close();
-            }
-        }
-
-    }
 
     public void startButtons(String quienSoy) {
         Socket s = null;
         try {
+            
+            
             int serverPort = 7896;
 
             s = new Socket("localhost", serverPort);
@@ -133,9 +126,10 @@ public final class GUImiau extends javax.swing.JFrame {
             DataInputStream in = new DataInputStream(s.getInputStream());
             DataOutputStream out
                     = new DataOutputStream(s.getOutputStream());
-
+            
+            comp.sumarPuntos(quienSoy);
             out.writeUTF(quienSoy);        	// UTF is a string encoding 
-
+             
             String data = in.readUTF();
             System.out.println("Received: " + data);
         } catch (UnknownHostException e) {
@@ -351,13 +345,13 @@ public final class GUImiau extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-int puntos = 1;
+
     private void cb22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb22ActionPerformed
         // TODO aDatagramSocket aSocket = null;
-        GUImiau cb = new GUImiau();
+        
         if(ganas("22")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -368,10 +362,10 @@ int puntos = 1;
 
     private void cb02ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb02ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+       
         if(ganas("02")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -383,10 +377,10 @@ int puntos = 1;
 
     private void cb12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb12ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("12")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -398,10 +392,10 @@ int puntos = 1;
 
     private void cb00ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb00ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("00")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -413,10 +407,10 @@ int puntos = 1;
 
     private void cb01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb01ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("01")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -428,10 +422,10 @@ int puntos = 1;
 
     private void cb10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb10ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("10")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -443,10 +437,10 @@ int puntos = 1;
 
     private void cb11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb11ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("11")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -458,10 +452,10 @@ int puntos = 1;
 
     private void cb20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb20ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
          if(ganas("20")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -473,10 +467,10 @@ int puntos = 1;
 
     private void cb21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb21ActionPerformed
         // TODO add your handling code here:
-        GUImiau cb = new GUImiau();
+        
         if(ganas("21")){
             try {
-                cb.startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons(Inet4Address.getLocalHost().getHostAddress());
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -492,7 +486,13 @@ int puntos = 1;
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUImiau().setVisible(true);
+                try {
+                    new GUImiau().setVisible(true);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

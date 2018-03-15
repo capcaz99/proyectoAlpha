@@ -14,4 +14,5 @@ import java.rmi.RemoteException;
  */
 public interface Registro extends Remote {
     public void registrar (String ip) throws RemoteException;
+    public void sumarPuntos (String ip) throws RemoteException;
 }

@@ -5,6 +5,7 @@
  */
 package servidor;
 
+import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,11 +18,23 @@ public class RunThreads {
 
         public static void main(String[] args) {
 
-            UDP hilo1 = new UDP();
-            TCPListener hilo2 = new TCPListener();
+           
+            try {
+                RMI hilo3 = new RMI();
+                 UDP hilo1 = new UDP();
+                TCPListener hilo2 = new TCPListener();
+                
+                System.out.println("Empezar 1");
+                hilo1.start(); // hilo para enviar monstruos
+                System.out.println("Empezar 3");
+                hilo3.start();
+               System.out.println("Empezar 2");
+                hilo2.runtcp();  // aquí el hilo está empezando dentro del método runtcp   **hilo para recibir respuesta de jugadores
+                
+            } catch (RemoteException ex) {
+                Logger.getLogger(RunThreads.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-            hilo1.start(); // hilo para enviar monstruos
-            hilo2.runtcp();  // aquí el hilo está empezando dentro del método runtcp   **hilo para recibir respuesta de jugadores
-
+           
         }
     }

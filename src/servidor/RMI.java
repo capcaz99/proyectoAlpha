@@ -31,7 +31,7 @@ public class RMI extends Thread implements Registro{
        
                 String name = "Registro";
                 RMI engine = new RMI();
-                RMI stub = (RMI) UnicastRemoteObject.exportObject(engine, 0);
+                Registro stub = (Registro) UnicastRemoteObject.exportObject(engine, 0);
                 Registry registry = LocateRegistry.getRegistry();
                 registry.rebind(name, stub);
                 System.out.println("Servidor desplegado");
@@ -47,7 +47,21 @@ public class RMI extends Thread implements Registro{
      
     @Override
     public void registrar(String ip) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        if(registro.get(ip) == null){
+            registro.put(ip, 0);
+            System.out.println("--------------------------------------Registrado: "+ip);
+        }
+    }
+
+    @Override
+    public void sumarPuntos(String ip) throws RemoteException {
+        int cantidad = registro.get(ip);
+        if(cantidad <4){
+        registro.replace(ip, cantidad+1);
+        System.out.println("--------------------------------------Añadido a: "+ip);
+        }else{
+            System.out.println("-------------------Ya hay un ganador-------------");
+        }
     }
     
 }

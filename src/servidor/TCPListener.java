@@ -11,12 +11,19 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ARENDONCL
  */
-public class TCPListener {
+public class TCPListener{
 
     public void runtcp() {
         try {
@@ -58,11 +65,18 @@ class Connection extends Thread {
         try {			                 // an echo server
             data = in.readUTF();
             System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
-           
+            
+            String name = "Registro";
+            Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
+            Registro comp = (Registro) registry.lookup(name);
+            comp.sumarPuntos(data);
+            
         } catch (EOFException e) {
             System.out.println("EOF:" + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO:" + e.getMessage());
+        } catch (NotBoundException ex) {
+            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 clientSocket.close();
