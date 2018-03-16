@@ -30,7 +30,7 @@ public class TCPListener{
             int serverPort = 7896;
             ServerSocket listenSocket = new ServerSocket(serverPort);
             while (true) {
-                System.out.println("Waiting for messages...");
+                //System.out.println("Waiting for messages...");
                 Socket clientSocket = listenSocket.accept();  // Listens for a connection to be made to this socket and accepts it. The method blocks until a connection is made. 
                 Connection c = new Connection(clientSocket);
                 c.start();
@@ -44,7 +44,7 @@ public class TCPListener{
 class Connection extends Thread {
     
     int puntaje = 0;
-    String data;
+    int data;
     DataInputStream in;
     DataOutputStream out;
     
@@ -63,8 +63,8 @@ class Connection extends Thread {
     @Override
     public void run() {
         try {			                 // an echo server
-            data = in.readUTF();
-            System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
+            data = in.readInt();
+            //System.out.println("Message received from: " + clientSocket.getRemoteSocketAddress());
             
             String name = "Registro";
             Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address

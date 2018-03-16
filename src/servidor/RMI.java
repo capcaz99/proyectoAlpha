@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class RMI extends Thread implements Registro{
     
-    private Hashtable<String, Integer> registro; 
+    private Hashtable<Integer, Integer> registro; 
     @Override
     public void run() {
         try {
@@ -39,19 +39,22 @@ public class RMI extends Thread implements Registro{
     
      public RMI() throws RemoteException {
         super();
-        this.registro = new Hashtable<String,Integer>();
+        this.registro = new Hashtable<Integer,Integer>();
     }
      
     @Override
-    public void registrar(String ip) throws RemoteException {
-        if(registro.get(ip) == null){
-            registro.put(ip, 0);
-            System.out.println("--------------------------------------Registrado: "+ip);
+    public int registrar() throws RemoteException {
+        RunThreads.numeroJugadores++;
+        int res = RunThreads.numeroJugadores;
+        if(registro.get(res) == null){
+            registro.put(res, 0);
+            System.out.println("--------------------------------------Registrado: "+res);
         }
+        return res;
     }
 
     @Override
-    public void sumarPuntos(String ip) throws RemoteException {
+    public void sumarPuntos(int ip) throws RemoteException {
         int cantidad = registro.get(ip);
         if(cantidad <4){
         registro.replace(ip, cantidad+1);
@@ -59,10 +62,10 @@ public class RMI extends Thread implements Registro{
         }else{
             System.out.println("-------------------Ya hay un ganador-------------");
             RunThreads.ganador = ip;
-            Set<String> llaves = registro.keySet();
-            for (String llave: llaves){
-                registro.replace(llave,0);
-                System.out.println("Borrar: "+ llave);
+            int i;
+            for (i=0;i<RunThreads.numeroJugadores;i++){
+                registro.replace(i,0);
+                System.out.println("Borrar: "+ i);
             }
             System.out.println("Nuevo: "+ registro.get(ip));
         }

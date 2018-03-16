@@ -13,6 +13,6 @@ import java.rmi.RemoteException;
  * @author CABURTOP
  */
 public interface Registro extends Remote {
-    public void registrar (String ip) throws RemoteException;
-    public void sumarPuntos (String ip) throws RemoteException;
+    public int registrar () throws RemoteException;
+    public void sumarPuntos (int ip) throws RemoteException;
 }

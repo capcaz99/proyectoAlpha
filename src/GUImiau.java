@@ -31,8 +31,10 @@ import servidor.Registro;
 public final class GUImiau extends javax.swing.JFrame {
 
     String posicionMonstruo="";
+    String posicionRecibida="";
     Registro comp;
     int puntos = 1;
+    int id = -1;
     
     public GUImiau() throws RemoteException, UnknownHostException {
 
@@ -42,11 +44,7 @@ public final class GUImiau extends javax.swing.JFrame {
         Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
         try {
             this.comp = (Registro) registry.lookup(name);
-            try {
-                comp.registrar(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            comp.registrar();
             System.out.println("Tengo el registro");
         } catch (NotBoundException ex) {
             Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,7 +73,7 @@ public final class GUImiau extends javax.swing.JFrame {
                 while (true) {
                     s.joinGroup(group);
                     
-                    String posicionRecibida="";
+                    posicionRecibida="";
                     System.out.println("Waiting for messages");
                     DatagramPacket messageIn
                             = new DatagramPacket(buffer, buffer.length);
@@ -83,7 +81,7 @@ public final class GUImiau extends javax.swing.JFrame {
                     posicionRecibida = new String(messageIn.getData());  
                     posicionRecibida=posicionRecibida.trim();
                     posicionMonstruo = posicionRecibida;
-                    System.out.println(posicionRecibida);
+                    
                     if (posicionRecibida.length()>2){
                         jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
                         System.out.println("Ganador: "+ posicionRecibida);
@@ -124,11 +122,9 @@ public final class GUImiau extends javax.swing.JFrame {
     }
 
 
-    public void startButtons(String quienSoy) {
+    public void startButtons(int quienSoy) {
         Socket s = null;
         try {
-            
-            
             int serverPort = 7896;
 
             s = new Socket("localhost", serverPort);
@@ -138,9 +134,9 @@ public final class GUImiau extends javax.swing.JFrame {
                     = new DataOutputStream(s.getOutputStream());
             
     
-            out.writeUTF(quienSoy);        	// UTF is a string encoding 
+            out.writeInt(quienSoy);        	// UTF is a string encoding 
              
-            String data = in.readUTF();
+            int data = in.readInt();
             System.out.println("Received: " + data);
         } catch (UnknownHostException e) {
             System.out.println("Sock:" + e.getMessage());
@@ -357,7 +353,7 @@ public final class GUImiau extends javax.swing.JFrame {
         
         if(ganas("22")){
             try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
+                startButtons();
             } catch (UnknownHostException ex) {
                 Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
             }

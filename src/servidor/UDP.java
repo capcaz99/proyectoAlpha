@@ -29,26 +29,29 @@ public class UDP extends Thread {
         
         while (i < 10) { //Cambiar mientras no haya ganador
             try {
-                String posEnviar="";
+                byte [] m = new byte [3];
                 Random r = new Random();
                 int posiciones[] = {r.nextInt(3), r.nextInt(3)};
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
-
-                //System.out.println("Posición enviada: x=" + posiciones[0] + " y=" + posiciones[1]);
-                posEnviar = "" + posiciones[0] + posiciones[1];
-
-                if (!RunThreads.ganador.equals("")){
-                    posEnviar = RunThreads.ganador.trim();
-                    RunThreads.ganador = "";                    
-                }
-                System.out.println("Antes de enviar: "+ posEnviar);
-                byte[] m = posEnviar.getBytes();
-                DatagramPacket messageOut
-                        = new DatagramPacket(m, m.length, group, 6789);
                 
-                s.send(messageOut);
+                if (RunThreads.ganador==-1){
+                    m[2]=(byte) RunThreads.ganador;
+                    RunThreads.ganador = -1;
+                    DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
+                    s.send(messageOut);
+                }
+                else{
+                    m[0] =(byte) posiciones[0];
+                    m[1] =(byte) posiciones[1];
+                   // byte[] m = posEnviar.getBytes();
+                    DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
+                    s.send(messageOut);
+                    String mensaje =new String(messageOut.getData());
+                    System.out.println("Mensaje: "+ mensaje );
+                }
+                
                 
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());

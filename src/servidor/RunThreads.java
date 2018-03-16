@@ -15,7 +15,8 @@ import java.util.logging.Logger;
  */
 public class RunThreads {
     
-    public static String ganador = "";
+    public static int ganador = -1;
+    public static int numeroJugadores = 0;
 
 
         public static void main(String[] args) {
