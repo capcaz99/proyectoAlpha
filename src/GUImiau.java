@@ -95,9 +95,12 @@ public final class GUImiau extends javax.swing.JFrame {
                     int pos0 = Character.getNumericValue(splited[0]);
                     int pos1 = Character.getNumericValue(splited[1]);
                     botones[pos0][pos1].setSelected(true);
-                    if (i != 0 && (ant0 != pos0 || ant1 != pos1)) {
+                    if (i != 0 && (ant0 != pos0 || ant1 != pos1)) 
                         botones[ant0][ant1].setSelected(false);
-                    }
+                    
+                    if(i == 0)
+                        i=1;
+                    
                     ant0 = pos0;
                     ant1 = pos1;
                     
