@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.Socket;
@@ -30,11 +29,16 @@ import servidor.Registro;
  */
 public final class GUImiau extends javax.swing.JFrame {
 
-    String posicionMonstruo="";
-    String posicionRecibida="";
+    int posicionMonstruo;
+    int posicionMonstruo1;
+    int posicionRecibida;
+    int posicionRecibida1;
     Registro comp;
-    int puntos = 1;
+   // int puntos = 1;
     int id = -1;
+    String pos;
+
+    
     
     public GUImiau() throws RemoteException, UnknownHostException {
 
@@ -44,7 +48,7 @@ public final class GUImiau extends javax.swing.JFrame {
         Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
         try {
             this.comp = (Registro) registry.lookup(name);
-            comp.registrar();
+           id = comp.registrar();
             System.out.println("Tengo el registro");
         } catch (NotBoundException ex) {
             Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,26 +76,28 @@ public final class GUImiau extends javax.swing.JFrame {
                 
                 while (true) {
                     s.joinGroup(group);
-                    
-                    posicionRecibida="";
+                  
                     System.out.println("Waiting for messages");
                     DatagramPacket messageIn
                             = new DatagramPacket(buffer, buffer.length);
                     s.receive(messageIn);
-                    posicionRecibida = new String(messageIn.getData());  
-                    posicionRecibida=posicionRecibida.trim();
+                    System.out.println("POS: "+ messageIn.getData()[0]+messageIn.getData()[1]);
+                    posicionRecibida = messageIn.getData()[0];  
+                    posicionRecibida1=messageIn.getData()[1];
                     posicionMonstruo = posicionRecibida;
+                    posicionMonstruo1 = posicionRecibida1;
+                    System.out.println("MessageIn get data 0: "+messageIn.getData()[0]);
+                    System.out.println("MessageIn get data 1: "+messageIn.getData()[1]);
+                    System.out.println("MessageIn get data 2: "+messageIn.getData()[2]);
                     
-                    if (posicionRecibida.length()>2){
+                    if (messageIn.getData()[2]!=-1){
                         jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
                         System.out.println("Ganador: "+ posicionRecibida);
                       
                     }
                     else {
-                    posicionMonstruo = posicionRecibida;
-                    char[] splited = posicionRecibida.toCharArray();
-                    int pos0 = Character.getNumericValue(splited[0]);
-                    int pos1 = Character.getNumericValue(splited[1]);
+                    int pos0 = posicionRecibida;
+                    int pos1 = posicionRecibida1;
                     botones[pos0][pos1].setSelected(true);
                     if (i != 0 && (ant0 != pos0 || ant1 != pos1)) {
                         botones[ant0][ant1].setSelected(false);
@@ -122,7 +128,7 @@ public final class GUImiau extends javax.swing.JFrame {
     }
 
 
-    public void startButtons(int quienSoy) {
+    public void startButtons() {
         Socket s = null;
         try {
             int serverPort = 7896;
@@ -134,7 +140,7 @@ public final class GUImiau extends javax.swing.JFrame {
                     = new DataOutputStream(s.getOutputStream());
             
     
-            out.writeInt(quienSoy);        	// UTF is a string encoding 
+            out.writeInt(id);        	// UTF is a string encoding 
              
             int data = in.readInt();
             System.out.println("Received: " + data);
@@ -155,8 +161,8 @@ public final class GUImiau extends javax.swing.JFrame {
         }
     }
     
-    public boolean ganas(String posicionActual){
-        return posicionActual.equals(posicionMonstruo.trim());
+    public boolean ganas(int pos1, int pos2){
+        return (pos1 == posicionRecibida && pos2 == posicionRecibida1);
     }
 
     /**
@@ -351,12 +357,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb22ActionPerformed
         // TODO aDatagramSocket aSocket = null;
         
-        if(ganas("22")){
-            try {
-                startButtons();
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if(ganas(2,2)){
+            startButtons();
         }else{
             cb22.setSelected(false);
         }
@@ -365,12 +367,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb02ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb02ActionPerformed
         // TODO add your handling code here:
        
-        if(ganas("02")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if(ganas(0,2)){
+            startButtons();
         }else{
             cb02.setSelected(false);
         }
@@ -380,12 +378,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb12ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("12")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(1,2)){
+             startButtons();
         }else{
             cb12.setSelected(false);
         }
@@ -395,12 +389,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb00ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb00ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("00")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(0,0)){
+             startButtons();
         }else{
             cb00.setSelected(false);
         }
@@ -410,12 +400,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb01ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("01")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(0,1)){
+             startButtons();
         }else{
             cb01.setSelected(false);
         }
@@ -425,12 +411,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb10ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("10")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(1,0)){
+             startButtons();
         }else{
             cb10.setSelected(false);
         }
@@ -440,12 +422,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb11ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("11")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(1,1)){
+             startButtons();
         }else{
             cb11.setSelected(false);
         }
@@ -455,12 +433,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb20ActionPerformed
         // TODO add your handling code here:
         
-         if(ganas("20")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         if(ganas(2,0)){
+             startButtons();
         }else{
             cb20.setSelected(false);
         }
@@ -470,12 +444,8 @@ public final class GUImiau extends javax.swing.JFrame {
     private void cb21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb21ActionPerformed
         // TODO add your handling code here:
         
-        if(ganas("21")){
-            try {
-                startButtons(Inet4Address.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if(ganas(2,1)){
+            startButtons();
         }else{
             cb21.setSelected(false);
         }

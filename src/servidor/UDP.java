@@ -31,25 +31,31 @@ public class UDP extends Thread {
             try {
                 byte [] m = new byte [3];
                 Random r = new Random();
-                int posiciones[] = {r.nextInt(3), r.nextInt(3)};
+                int r1=r.nextInt(3);
+                int r2=r.nextInt(3);
+                int posiciones[] = {r1, r2};
+                System.out.println("pos1: "+r1+ "pos2: "+r2);
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
                 
-                if (RunThreads.ganador==-1){
+                if (RunThreads.ganador!=-1){
                     m[2]=(byte) RunThreads.ganador;
-                    RunThreads.ganador = -1;
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
                     s.send(messageOut);
+                    RunThreads.ganador = -1;
+                    System.out.println("miauuuuuuuuuuuuuuu -1 : "+m[2]);
                 }
                 else{
                     m[0] =(byte) posiciones[0];
                     m[1] =(byte) posiciones[1];
+                    m[2]=(byte) RunThreads.ganador;
                    // byte[] m = posEnviar.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
                     s.send(messageOut);
                     String mensaje =new String(messageOut.getData());
-                    System.out.println("Mensaje: "+ mensaje );
+                    System.out.println("Mensajeeeeeeeeeee: "+ mensaje );
+                    System.out.println("miauuuuuuuuuuuuuuu: "+m[2]);
                 }
                 
                 
