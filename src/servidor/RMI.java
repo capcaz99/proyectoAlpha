@@ -53,9 +53,10 @@ public class RMI extends Thread implements Registro{
     @Override
     public void sumarPuntos(String ip) throws RemoteException {
         int cantidad = registro.get(ip);
+        System.out.println("----------cantidad: "+cantidad);
         if(cantidad <4){
         registro.replace(ip, cantidad+1);
-        System.out.println("--------------------------------------Añadido a: "+ip);
+        System.out.println("-----------------------------Añadido a: "+ip);
         }else{
             System.out.println("-------------------Ya hay un ganador-------------");
             RunThreads.ganador = ip;

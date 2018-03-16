@@ -41,13 +41,13 @@ public class UDP extends Thread {
 
                 if (!RunThreads.ganador.equals("")){
                     posEnviar = RunThreads.ganador.trim();
-                    RunThreads.ganador = "";                    
+                    RunThreads.ganador = "";  
+                    System.out.println("UDP------:"+RunThreads.ganador);
                 }
-                System.out.println("Antes de enviar: "+ posEnviar);
+                
                 byte[] m = posEnviar.getBytes();
                 DatagramPacket messageOut
                         = new DatagramPacket(m, m.length, group, 6789);
-                
                 s.send(messageOut);
                 
             } catch (SocketException e) {

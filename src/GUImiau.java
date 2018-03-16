@@ -71,19 +71,26 @@ public final class GUImiau extends javax.swing.JFrame {
                 int ant0 = 0;
                 int ant1 = 0;
                 int i = 0;
-                
+                     s.joinGroup(group);
                 while (true) {
-                    s.joinGroup(group);
+                   
                     
                     String posicionRecibida="";
-                    System.out.println("Waiting for messages");
+                    
+                    System.out.println("Waiting for messages: ");
+                    
                     DatagramPacket messageIn
                             = new DatagramPacket(buffer, buffer.length);
                     s.receive(messageIn);
+                    
                     posicionRecibida = new String(messageIn.getData());  
                     posicionRecibida=posicionRecibida.trim();
+                    System.out.println("Aqui: "+posicionRecibida);
+                    
+                    
                     posicionMonstruo = posicionRecibida;
                     System.out.println(posicionRecibida);
+                    
                     if (posicionRecibida.length()>2){
                         jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
                         System.out.println("Ganador: "+ posicionRecibida);
@@ -109,7 +116,7 @@ public final class GUImiau extends javax.swing.JFrame {
                     //    System.out.println(posicionRecibida);
                    
                     //    System.out.println(posic
-                    s.leaveGroup(group);
+                    //s.leaveGroup(group);
                 }
                  
                 
