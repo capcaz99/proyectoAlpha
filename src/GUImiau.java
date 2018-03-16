@@ -48,7 +48,8 @@ public final class GUImiau extends javax.swing.JFrame {
         Registry registry = LocateRegistry.getRegistry("localhost"); // server's ip address
         try {
             this.comp = (Registro) registry.lookup(name);
-           id = comp.registrar();
+            id = comp.registrar();
+            System.out.println("Mi id es: " + id);
             System.out.println("Tengo el registro");
         } catch (NotBoundException ex) {
             Logger.getLogger(GUImiau.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,19 +87,44 @@ public final class GUImiau extends javax.swing.JFrame {
                     posicionRecibida1=messageIn.getData()[1];
                     posicionMonstruo = posicionRecibida;
                     posicionMonstruo1 = posicionRecibida1;
-                    System.out.println("MessageIn get data 0: "+messageIn.getData()[0]);
-                    System.out.println("MessageIn get data 1: "+messageIn.getData()[1]);
-                    System.out.println("MessageIn get data 2: "+messageIn.getData()[2]);
+//                    System.out.println("MessageIn get data 0: "+messageIn.getData()[0]);
+//                    System.out.println("MessageIn get data 1: "+messageIn.getData()[1]);
+//                    System.out.println("MessageIn get data 2: "+messageIn.getData()[2]);
                     
-                    if (messageIn.getData()[2]!=-1){
-                        jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
-                        System.out.println("Ganador: "+ posicionRecibida);
-                      
+                    int ganador=messageIn.getData()[2];
+                    if (ganador!=-1){
+                        if(ganador==id){
+                            jOptionPane2.showMessageDialog(jFrame1, "Eres el ganador jugador: " + id);  
+                        }
+                        else{
+                            jOptionPane2.showMessageDialog(jFrame1, "Eres el perdedor jugador: " + id);  
+                        }
+                        
+                        
                     }
                     else {
                     int pos0 = posicionRecibida;
                     int pos1 = posicionRecibida1;
                     botones[pos0][pos1].setSelected(true);
+                    
+                    
+//                    int a=0;
+//                    int b=0;
+//                    for(a =0; a==2 ; a++){
+//                        System.out.println("Primer for" +a);
+//                        for(b =0; b==2 ; b++){
+//                            System.out.println("Segundo for" +b);
+//                            if(a== pos0 && b==pos1){
+//                                System.out.println("Entra a colorear casilla "+ a+b);
+//                                botones[a][b].setSelected(true);
+//                            }
+//                            else{
+//                                System.out.println("Entra a des colorear casilla "+ a+b);
+//                                botones[a][b].setSelected(false);
+//                            }
+//                        }
+//                    }
+                    
                     if (i != 0 && (ant0 != pos0 || ant1 != pos1)) {
                         botones[ant0][ant1].setSelected(false);
                     }

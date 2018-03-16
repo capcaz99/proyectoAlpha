@@ -34,17 +34,22 @@ public class UDP extends Thread {
                 int r1=r.nextInt(3);
                 int r2=r.nextInt(3);
                 int posiciones[] = {r1, r2};
-                System.out.println("pos1: "+r1+ "pos2: "+r2);
+                System.out.println("pos1: "+r1+ " pos2: "+r2);
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
                 
                 if (RunThreads.ganador!=-1){
+                    m[0] =(byte) 0;
+                    m[1] =(byte) 0;
                     m[2]=(byte) RunThreads.ganador;
+                    System.out.println("Ganador : "+ m[2]);
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
                     s.send(messageOut);
                     RunThreads.ganador = -1;
-                    System.out.println("miauuuuuuuuuuuuuuu -1 : "+m[2]);
+//                    System.out.println("Data win 0: "+messageOut.getData()[0]);
+//                    System.out.println("Data win 1 "+messageOut.getData()[1]);
+//                    System.out.println("Data win 2 "+messageOut.getData()[2]);
                 }
                 else{
                     m[0] =(byte) posiciones[0];
@@ -53,9 +58,9 @@ public class UDP extends Thread {
                    // byte[] m = posEnviar.getBytes();
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
                     s.send(messageOut);
-                    String mensaje =new String(messageOut.getData());
-                    System.out.println("Mensajeeeeeeeeeee: "+ mensaje );
-                    System.out.println("miauuuuuuuuuuuuuuu: "+m[2]);
+//                    System.out.println("Data no 0 "+messageOut.getData()[0]);
+//                    System.out.println("Data no 1 "+messageOut.getData()[1]);
+//                    System.out.println("Data no 2 "+messageOut.getData()[2]);
                 }
                 
                 
