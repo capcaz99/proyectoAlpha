@@ -74,7 +74,8 @@ public final class GUImiau extends javax.swing.JFrame {
                 int ant0 = 0;
                 int ant1 = 0;
                 int i = 0;
-                
+                int pos0;
+                int pos1;
                 while (true) {
                     s.joinGroup(group);
                   
@@ -101,33 +102,19 @@ public final class GUImiau extends javax.swing.JFrame {
                         }
                         
                         
-                    }
-                    else {
-                    int pos0 = posicionRecibida;
-                    int pos1 = posicionRecibida1;
+                    }else {
+                        
+                     pos0 = posicionRecibida;
+                     pos1 = posicionRecibida1;
                     botones[pos0][pos1].setSelected(true);
                     
                     
-//                    int a=0;
-//                    int b=0;
-//                    for(a =0; a==2 ; a++){
-//                        System.out.println("Primer for" +a);
-//                        for(b =0; b==2 ; b++){
-//                            System.out.println("Segundo for" +b);
-//                            if(a== pos0 && b==pos1){
-//                                System.out.println("Entra a colorear casilla "+ a+b);
-//                                botones[a][b].setSelected(true);
-//                            }
-//                            else{
-//                                System.out.println("Entra a des colorear casilla "+ a+b);
-//                                botones[a][b].setSelected(false);
-//                            }
-//                        }
-//                    }
-                    
-                    if (i != 0 && (ant0 != pos0 || ant1 != pos1)) {
+                    if (i != 0 && (ant0 != pos0 || ant1 != pos1)) 
                         botones[ant0][ant1].setSelected(false);
-                    }
+                    
+                    if(i == 0)
+                        i = 1;
+                    
                     ant0 = pos0;
                     ant1 = pos1;
                     
@@ -188,7 +175,7 @@ public final class GUImiau extends javax.swing.JFrame {
     }
     
     public boolean ganas(int pos1, int pos2){
-        return (pos1 == posicionRecibida && pos2 == posicionRecibida1);
+        return (pos1 == posicionMonstruo && pos2 == posicionMonstruo1);
     }
 
     /**
