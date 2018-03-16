@@ -34,7 +34,7 @@ public class UDP extends Thread {
                 int r1=r.nextInt(3);
                 int r2=r.nextInt(3);
                 int posiciones[] = {r1, r2};
-                System.out.println("pos1: "+r1+ " pos2: "+r2);
+                //System.out.println("pos1: "+r1+ " pos2: "+r2);
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
                 s.joinGroup(group);
@@ -43,7 +43,7 @@ public class UDP extends Thread {
                     m[0] =(byte) 0;
                     m[1] =(byte) 0;
                     m[2]=(byte) RunThreads.ganador;
-                    System.out.println("Ganador : "+ m[2]);
+                    //System.out.println("Ganador : "+ m[2]);
                     DatagramPacket messageOut = new DatagramPacket(m, m.length, group, 6789);
                     s.send(messageOut);
                     RunThreads.ganador = -1;

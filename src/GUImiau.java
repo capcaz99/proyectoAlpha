@@ -96,6 +96,7 @@ public final class GUImiau extends javax.swing.JFrame {
                     if (ganador!=-1){
                         if(ganador==id){
                             jOptionPane2.showMessageDialog(jFrame1, "Eres el ganador jugador: " + id);  
+                            
                         }
                         else{
                             jOptionPane2.showMessageDialog(jFrame1, "Eres el perdedor jugador: " + id);  

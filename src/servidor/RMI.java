@@ -31,7 +31,7 @@ public class RMI extends Thread implements Registro{
                 Registro stub = (Registro) UnicastRemoteObject.exportObject(engine, 0);
                 Registry registry = LocateRegistry.getRegistry();
                 registry.rebind(name, stub);
-                System.out.println("Servidor desplegado");
+                //System.out.println("Servidor desplegado");
          } catch (RemoteException ex) {
             Logger.getLogger(RMI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -48,7 +48,7 @@ public class RMI extends Thread implements Registro{
         int res = RunThreads.numeroJugadores;
         if(registro.get(res) == null){
             registro.put(res, 0);
-            System.out.println("--------------------------------------Registrado: "+res);
+            //System.out.println("--------------------------------------Registrado: "+res);
         }
         return res;
     }
@@ -56,19 +56,19 @@ public class RMI extends Thread implements Registro{
     @Override
     public void sumarPuntos(int ip) throws RemoteException {
         int cantidad = registro.get(ip);
-        System.out.println("Puntaje de "+ ip+ " es igual " + cantidad);
+        //System.out.println("Puntaje de "+ ip+ " es igual " + cantidad);
         if(cantidad <4){
             registro.replace(ip, cantidad+1);
-            System.out.println("--------------------------------------Añadido a: "+ip);
+            //System.out.println("--------------------------------------Añadido a: "+ip);
         }else{
-            System.out.println("-------------------Ya hay un ganador-------------");
+          //  System.out.println("-------------------Ya hay un ganador-------------");
             RunThreads.ganador = ip;
             int i;
             for (i=1;i<=RunThreads.numeroJugadores;i++){
                 registro.replace(i,0);
-                System.out.println("Jugador: "+ i +" Puntaje: " +registro.get(i));
+              //  System.out.println("Jugador: "+ i +" Puntaje: " +registro.get(i));
             }
-            System.out.println("Nuevo: "+ registro.get(ip));
+            //System.out.println("Nuevo: "+ registro.get(ip));
         }
     }
     
