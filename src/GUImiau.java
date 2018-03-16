@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -31,7 +30,7 @@ import servidor.Registro;
  */
 public final class GUImiau extends javax.swing.JFrame {
 
-    String posicionMonstruo;
+    String posicionMonstruo="";
     Registro comp;
     int puntos = 1;
     
@@ -68,26 +67,27 @@ public final class GUImiau extends javax.swing.JFrame {
             try {
                 InetAddress group = InetAddress.getByName("228.5.6.7"); // destination multicast group 
                 s = new MulticastSocket(6789);
-                
-               
-            
-            
                 byte[] buffer = new byte[1000];
                 int ant0 = 0;
                 int ant1 = 0;
-                s.joinGroup(group);
-                for (int i = 0; i < 100; i++) {
+                int i = 0;
+                
+                while (true) {
+                    s.joinGroup(group);
                     
+                    String posicionRecibida="";
                     System.out.println("Waiting for messages");
                     DatagramPacket messageIn
                             = new DatagramPacket(buffer, buffer.length);
                     s.receive(messageIn);
-                    String ip = new String(messageIn.getData());
-                    String posicionRecibida = new String(messageIn.getData());
-                    ip = ip.trim();
-                    if (ip.equals(Inet4Address.getLocalHost().getHostAddress())){
-                        System.out.println("Entra al if ");
-                      jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
+                    posicionRecibida = new String(messageIn.getData());  
+                    posicionRecibida=posicionRecibida.trim();
+                    posicionMonstruo = posicionRecibida;
+                    System.out.println(posicionRecibida);
+                    if (posicionRecibida.length()>2){
+                        jOptionPane2.showMessageDialog(jFrame1, "Eggs are not supposed to be green.");  
+                        System.out.println("Ganador: "+ posicionRecibida);
+                      
                     }
                     else {
                     posicionMonstruo = posicionRecibida;
@@ -106,8 +106,9 @@ public final class GUImiau extends javax.swing.JFrame {
                     //    System.out.println(posicionRecibida);
                    
                     //    System.out.println(posic
+                    s.leaveGroup(group);
                 }
-                 s.leaveGroup(group);
+                 
                 
             } catch (SocketException e) {
                 System.out.println("Socket: " + e.getMessage());
@@ -136,7 +137,7 @@ public final class GUImiau extends javax.swing.JFrame {
             DataOutputStream out
                     = new DataOutputStream(s.getOutputStream());
             
-            comp.sumarPuntos(quienSoy);
+    
             out.writeUTF(quienSoy);        	// UTF is a string encoding 
              
             String data = in.readUTF();
@@ -185,9 +186,7 @@ public final class GUImiau extends javax.swing.JFrame {
         cb21 = new javax.swing.JCheckBox();
         cb22 = new javax.swing.JCheckBox();
         label1 = new javax.swing.JLabel();
-        label = new javax.swing.JLabel();
-        label3 = new javax.swing.JLabel();
-        label4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         label2.setText("jLabel1");
 
@@ -204,88 +203,89 @@ public final class GUImiau extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel1.setBackground(new java.awt.Color(255, 0, 153));
 
-        cb00.setBackground(new java.awt.Color(255, 153, 153));
+        cb00.setBackground(new java.awt.Color(255, 0, 153));
         cb00.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb00ActionPerformed(evt);
             }
         });
 
-        cb01.setBackground(new java.awt.Color(255, 153, 153));
+        cb01.setBackground(new java.awt.Color(255, 0, 153));
         cb01.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb01ActionPerformed(evt);
             }
         });
 
-        cb02.setBackground(new java.awt.Color(255, 153, 153));
+        cb02.setBackground(new java.awt.Color(255, 0, 153));
         cb02.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb02ActionPerformed(evt);
             }
         });
 
-        cb10.setBackground(new java.awt.Color(255, 153, 153));
+        cb10.setBackground(new java.awt.Color(255, 0, 153));
         cb10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb10ActionPerformed(evt);
             }
         });
 
-        cb11.setBackground(new java.awt.Color(255, 153, 153));
+        cb11.setBackground(new java.awt.Color(255, 0, 153));
         cb11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb11ActionPerformed(evt);
             }
         });
 
-        cb12.setBackground(new java.awt.Color(255, 153, 153));
+        cb12.setBackground(new java.awt.Color(255, 0, 153));
         cb12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb12ActionPerformed(evt);
             }
         });
 
-        cb20.setBackground(new java.awt.Color(255, 153, 153));
+        cb20.setBackground(new java.awt.Color(255, 0, 153));
         cb20.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb20ActionPerformed(evt);
             }
         });
 
-        cb21.setBackground(new java.awt.Color(255, 153, 153));
+        cb21.setBackground(new java.awt.Color(255, 0, 153));
         cb21.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb21ActionPerformed(evt);
             }
         });
 
-        cb22.setBackground(new java.awt.Color(255, 153, 153));
+        cb22.setBackground(new java.awt.Color(255, 0, 153));
         cb22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb22ActionPerformed(evt);
             }
         });
 
-        label.setText("jLabel1");
-
-        label3.setText("jLabel1");
-
-        label4.setText("jLabel1");
+        jLabel1.setFont(new java.awt.Font("Showcard Gothic", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("GUACAMOLE");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(label1)
+                .addGap(75, 75, 75))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(label1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(94, 94, 94)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -304,18 +304,15 @@ public final class GUImiau extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cb02)
                             .addComponent(cb12)
-                            .addComponent(cb22))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(label4)
-                    .addComponent(label3)
-                    .addComponent(label))
-                .addGap(35, 35, 35))
+                            .addComponent(cb22))))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cb01)
                     .addComponent(cb00)
@@ -326,26 +323,13 @@ public final class GUImiau extends javax.swing.JFrame {
                     .addComponent(cb11)
                     .addComponent(cb12))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cb20)
-                            .addComponent(cb21)
-                            .addComponent(cb22))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(23, 23, 23))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(label3)
-                                .addGap(18, 18, 18)
-                                .addComponent(label)
-                                .addGap(0, 20, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(label4)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cb20)
+                    .addComponent(cb21)
+                    .addComponent(cb22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -355,7 +339,7 @@ public final class GUImiau extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -531,12 +515,10 @@ public final class GUImiau extends javax.swing.JFrame {
     private javax.swing.JCheckBox cb21;
     private javax.swing.JCheckBox cb22;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JOptionPane jOptionPane2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel label;
     private javax.swing.JLabel label1;
     private javax.swing.JLabel label2;
-    private javax.swing.JLabel label3;
-    private javax.swing.JLabel label4;
     // End of variables declaration//GEN-END:variables
 }

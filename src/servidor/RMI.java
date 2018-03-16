@@ -11,6 +11,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,12 +24,8 @@ public class RMI extends Thread implements Registro{
     private Hashtable<String, Integer> registro; 
     @Override
     public void run() {
-        
-         
-         
         try {
             LocateRegistry.createRegistry(1099);
-       
                 String name = "Registro";
                 RMI engine = new RMI();
                 Registro stub = (Registro) UnicastRemoteObject.exportObject(engine, 0);
@@ -61,7 +58,13 @@ public class RMI extends Thread implements Registro{
         System.out.println("--------------------------------------Añadido a: "+ip);
         }else{
             System.out.println("-------------------Ya hay un ganador-------------");
-       RunThreads.ganador = ip;
+            RunThreads.ganador = ip;
+            Set<String> llaves = registro.keySet();
+            for (String llave: llaves){
+                registro.replace(llave,0);
+                System.out.println("Borrar: "+ llave);
+            }
+            System.out.println("Nuevo: "+ registro.get(ip));
         }
     }
     
