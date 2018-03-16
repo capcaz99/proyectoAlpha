@@ -124,11 +124,11 @@ public final class GUImiau extends javax.swing.JFrame {
                 System.out.println("Socket: " + e.getMessage());
             } catch (IOException e) {
                 System.out.println("IO: " + e.getMessage());
-            } finally {
-                if (s != null) {
-                    s.close();
-                }
-            }
+            }// finally {
+               // if (s != null) {
+                 //   s.close();
+                //}
+            //}
 
         }
     }
